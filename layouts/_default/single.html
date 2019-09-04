@@ -11,7 +11,7 @@
 					<div id="main">
 
 						<!-- Post -->
-                        <section class="post">
+                        <section class="page"> <!-- used to be class="post"-->
                             <header class="major">
                                 {{ if not .Date.IsZero }}
                                 <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
@@ -25,11 +25,10 @@
                             {{ .Content }}
 
                             {{ partial "postcustom" . }}
-                            
+
                             {{ if not (eq .Params.disableComments true) }}
                             {{ template "_internal/disqus.html" . }}
                             {{ end }}
-                        </section>
 
 					</div>
 
