@@ -1,6 +1,7 @@
 {{ partial "htmlhead" . }}
 	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-loading">
 
+		{{/*
 		{{ $pagesFoldername := .Site.Params.Pages.foldername | default "page" }}
 		{{ $pagesPageSize := .Site.Params.Pages.pagesize | default 6 }}
 
@@ -16,12 +17,12 @@
 		{{ $pagesForPaging := .Scratch.Get "pagesForPaging" }}
 
 		{{ $pagesPaging := .Paginate $pagesForPaging $pagesPageSize }}
+		*/}}
 
 		<!-- Wrapper -->
-			<div id="wrapper" class="fade-in" data-pfn="{{ $pagesFoldername }}" data-ps="{{ $pagesPageSize }}">
+			<div id="wrapper" class="fade-in" {{/*data-pfn="{{ $pagesFoldername }}" data-ps="{{ $pagesPageSize }}"*/}}>
 
 				{{ partial "intro.html" . }}
-
 				{{ partial "header" . }}
 				{{ partial "nav" . }}
 
@@ -30,6 +31,8 @@
 
                         <!-- Post -->
                         <section class="page"> <!-- used to be class="post"-->
+                            {{ partial "slider" . }}
+
                             {{ .Content }}
                         </section>
 

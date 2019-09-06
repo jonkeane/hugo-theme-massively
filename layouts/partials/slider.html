@@ -1,0 +1,41 @@
+{{ if isset .Site.Params "slider" }}
+{{ if .Site.Params.slider.enable }}
+
+<section class="slider">
+    {{/* {{ if .Site.Data.slider }}
+    {{ if gt (len .Site.Assets.slider) 0 }} */}}
+    <div id="theCarousel" class="carousel slide" data-ride="carousel">
+
+    <ol class="carousel-indicators">
+        {{ $url := .Title | printf "/images/slider/%s" }}
+        {{ $folder := .Title | printf "/static/images/slider/%s" }}
+        {{ $files := readDir $folder }}
+
+    	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
+            <li data-target="#carousel-indicators" data-slide-to="{{ $index }}"{{ if (eq $index 0) }}  class="active" {{ end }}></li>
+        {{ end }}
+    </ol>
+    <div class="carousel-inner">
+    	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
+    	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
+        	<img src="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+    	</div>
+	   {{ end }}
+    </div>
+    <a class="carousel-control-prev" href="#theCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#theCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+	{{/*{{ end }}
+	{{ end }} */}}
+
+    </div>
+    <!-- #controllers -->
+</section><!-- .featured-slider -->
+
+{{ end }}
+{{ end }}

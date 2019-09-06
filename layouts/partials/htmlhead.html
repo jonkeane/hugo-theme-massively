@@ -9,6 +9,7 @@
 		<title>{{ if eq (.Site.Title) (.Title) }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href='{{ "assets/css/bootstrap.css" | relURL }}' />
 		<link rel="stylesheet" href='{{ "assets/css/main.css" | relURL }}' />
 		{{ with .Site.Params.favicon }}
 		<link rel="shortcut icon" href="{{ . }}">
