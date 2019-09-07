@@ -4,7 +4,7 @@
 <section class="slider">
     {{/* {{ if .Site.Data.slider }}
     {{ if gt (len .Site.Assets.slider) 0 }} */}}
-    <div id="theCarousel" class="carousel slide" data-ride="carousel">
+    <div id="theCarousel" class="carousel slide lazy" data-ride="carousel">
 
     <ol class="carousel-indicators">
         {{ $url := .Title | printf "/images/slider/%s" }}
@@ -12,13 +12,13 @@
         {{ $files := readDir $folder }}
 
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
-            <li data-target="#carousel-indicators" data-slide-to="{{ $index }}"{{ if (eq $index 0) }}  class="active" {{ end }}></li>
+            <li data-target="#theCarousel" data-slide-to="{{ $index }}"{{ if (eq $index 0) }}  class="active" {{ end }}></li>
         {{ end }}
     </ol>
     <div class="carousel-inner">
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
-        	<img src="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+        	<img {{ if (eq $index 0) }}src{{ else }}data-src{{ end }}="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
     	</div>
 	   {{ end }}
     </div>

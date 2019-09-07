@@ -256,3 +256,23 @@
 		}
 
 })(jQuery);
+
+
+// from https://coderwall.com/p/6qaeya/lazy-carousel-in-bootstrap
+// load the next image when the carousel is sliding
+$(function() {
+  return $(".carousel.lazy").on("slid.bs.carousel", function(ev) {
+    // this should already be done, but just in case!
+    var lazy;
+    lazy = $(ev.relatedTarget).find("img[data-src]");
+    lazy.attr("src", lazy.data('src'));
+    lazy.removeAttr("data-src");
+
+    var lazynext;
+    lazynext = $(ev.relatedTarget).next().find("img[data-src]");
+    lazynext.attr("src", lazynext.data('src'));
+    lazynext.removeAttr("data-src");
+  });
+});
+
+// TODO: https://coderwall.com/p/uf2pka/normalize-twitter-bootstrap-carousel-slide-heights normalize at least what has been seen so far.

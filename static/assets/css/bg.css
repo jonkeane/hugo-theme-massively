@@ -1,16 +1,4 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang='{{ .Site.Language.Lang | default "en-us" }}'>
-	<head>
-		<title>{{ if eq (.Site.Title) (.Title) }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<style>
-		    @media screen and (max-width: 1680px) {
+@media screen and (max-width: 1680px) {
     #wrapper > .bg {
 	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_1680.jpg");
     }
@@ -45,12 +33,3 @@
 	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_360.jpg");
     }
 }
-		</style>
-		<link rel="stylesheet" href='{{ "assets/css/bg.css" | relURL }}' />
-		<link rel="stylesheet" href='{{ "assets/css/bootstrap.css" | relURL }}' />
-		<link rel="stylesheet" href='{{ "assets/css/main.css" | relURL }}' />
-		{{ with .Site.Params.favicon }}
-		<link rel="shortcut icon" href="{{ . }}">
-		{{ end }}
-		<noscript><link rel="stylesheet" href='{{ "assets/css/noscript.css" | relURL }}' /></noscript>
-	</head>
