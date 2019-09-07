@@ -11,9 +11,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href='{{ "assets/css/bootstrap.min.css" | relURL }}' />
 		<link rel="stylesheet" href='{{ "assets/css/main.css" | relURL }}' />
-		<link rel="stylesheet" href='{{ "assets/css/bg.css" | relURL }}' />
+        {{ partial "bg" . }}
 		{{ with .Site.Params.favicon }}
 		<link rel="shortcut icon" href="{{ . }}">
 		{{ end }}
 		<noscript><link rel="stylesheet" href='{{ "assets/css/noscript.css" | relURL }}' /></noscript>
 	</head>
+

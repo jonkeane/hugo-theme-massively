@@ -18,7 +18,7 @@
     <div class="carousel-inner">
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
-        	<img {{ if (eq $index 0) }}src{{ else }}data-src{{ end }}="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+        	<img {{ if (lt $index 2) }}src{{ else }}data-src{{ end }}="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
     	</div>
 	   {{ end }}
     </div>

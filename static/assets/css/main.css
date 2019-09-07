@@ -3209,7 +3209,7 @@ input, select, textarea {
 			height: 100%;
 			background-color: #212931;
 			background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_2300.jpg");
-			background-size: auto,								auto,														100% auto;
+			/* background-size: auto,								auto,														100% auto; */
 			background-position: center,								center,														top center;
 			background-repeat: repeat,								no-repeat,													no-repeat;
 			background-attachment: scroll,								scroll,														scroll;
@@ -3248,13 +3248,15 @@ input, select, textarea {
 			opacity: 1;
 		}
 
+/*
 		@media screen and (orientation: portrait) {
 
 			#wrapper > .bg {
-				background-size: auto,								auto,														auto 175%;
+				background-size: auto,								auto,														auto 100%;
 			}
 
 		}
+*/
 
 /* Intro */
 
@@ -4368,7 +4370,7 @@ input, select, textarea {
 		line-height: 1.5;
 		text-align: center;
 		text-transform: uppercase;
-		margin: 4rem auto 8rem auto;
+		margin: 2rem auto;
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
