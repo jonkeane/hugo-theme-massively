@@ -1,8 +1,9 @@
 {{ partial "htmlhead" . }}
-	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-loading">
+	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
 
 		<!-- Wrapper -->
 			<div id="wrapper">
+			    <div class="bg fixed"></div>
 
                 {{ partial "header" . }}
                 {{ partial "nav" . }}

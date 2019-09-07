@@ -1,7 +1,6 @@
 {{ partial "htmlhead" . }}
-	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-loading">
-
-		{{/*
+	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
+	    {{/*
 		{{ $pagesFoldername := .Site.Params.Pages.foldername | default "page" }}
 		{{ $pagesPageSize := .Site.Params.Pages.pagesize | default 6 }}
 
@@ -21,6 +20,7 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in" {{/*data-pfn="{{ $pagesFoldername }}" data-ps="{{ $pagesPageSize }}"*/}}>
+			    <div class="bg fixed"></div>
 
 				{{ partial "intro.html" . }}
 				{{ partial "header" . }}
