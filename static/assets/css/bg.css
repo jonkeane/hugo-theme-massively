@@ -18,18 +18,18 @@
 
 @media screen and (max-width: 736px) {
     #wrapper > .bg {
-	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_736.jpg");
+	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_980.jpg");
     }
 }
 
 @media screen and (max-width: 480px) {
     #wrapper > .bg {
-	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_480.jpg");
+	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_980.jpg");
     }
 }
 
 @media screen and (max-width: 360px) {
     #wrapper > .bg {
-	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_360.jpg");
+	    background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/IMG_4941_980.jpg");
     }
 }
