@@ -189,7 +189,7 @@ $(function() {
 });
 
 // swipe for carousel
-$window.on('load', function() {
+$(document).ready(function() {
     $('.carousel').bcSwipe({ threshold: 50 });
 });
 
