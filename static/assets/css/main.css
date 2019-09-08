@@ -166,6 +166,7 @@ input, select, textarea {
 
 		a:hover {
 			border-bottom-color: transparent;
+            text-decoration: none;
 		}
 
 	strong, b {
@@ -4358,71 +4359,73 @@ input, select, textarea {
 
 		}
 
-	#copyright {
-		color: #ffffff;
+	#colophon {
+		background-color: #363636cc;
+		color: #909498;
+		cursor: default;
 		position: relative;
-		color: rgba(255, 255, 255, 0.25);
 		cursor: default;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		font-weight: 900;
 		letter-spacing: 0.075em;
 		line-height: 1.5;
 		text-align: center;
 		text-transform: uppercase;
-		margin: 2rem auto;
+		margin: 1rem auto 2rem auto;
+		padding: 0.5rem;
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
 	}
 
-		#copyright input, #copyright select, #copyright textarea {
+		#colophon input, #colophon select, #colophon textarea {
 			color: #ffffff;
 		}
 
-		#copyright a {
+		#colophon a {
 			color: #ffffff;
 			border-bottom-color: rgba(255, 255, 255, 0.5);
 		}
 
-			#copyright a:hover {
+			#colophon a:hover {
 				border-bottom-color: transparent;
 				color: #18bfef !important;
 			}
 
-		#copyright strong, #copyright b {
+		#colophon strong, #colophon b {
 			color: #ffffff;
 		}
 
-		#copyright h1, #copyright h2, #copyright h3, #copyright h4, #copyright h5, #copyright h6 {
+		#colophon h1, #colophon h2, #colophon h3, #colophon h4, #colophon h5, #colophon h6 {
 			color: #ffffff;
 		}
 
-		#copyright blockquote {
+		#colophon blockquote {
 			border-left-color: #ffffff;
 		}
 
-		#copyright code {
+		#colophon code {
 			background: rgba(255, 255, 255, 0.075);
 			border-color: #ffffff;
 		}
 
-		#copyright hr {
+		#colophon hr {
 			border-bottom-color: #ffffff;
 		}
 
-		#copyright a {
+		#colophon a {
 			color: inherit;
 			border-bottom-color: inherit;
 		}
 
-		#copyright ul {
+		#colophon ul {
 			list-style: none;
 			margin: 0;
 			padding-left: 0;
 		}
 
-			#copyright ul li {
+			#colophon ul li {
 				border-left: solid 2px;
 				display: inline-block;
 				line-height: 1;
@@ -4430,7 +4433,7 @@ input, select, textarea {
 				padding-left: 1rem;
 			}
 
-				#copyright ul li:first-child {
+				#colophon ul li:first-child {
 					border-left: 0;
 					margin-left: 0;
 					padding-left: 0;
@@ -4438,22 +4441,22 @@ input, select, textarea {
 
 		@media screen and (max-width: 1280px) {
 
-			#copyright {
-				margin: 4rem auto;
+			#colophon {
+		        margin: 2rem auto 4rem auto;
 			}
 
 		}
 
 		@media screen and (max-width: 480px) {
 
-			#copyright ul li {
+			#colophon ul li {
 				border-left: 0;
 				margin: 1rem 0 0 0;
 				padding-left: 0;
 				display: block;
 			}
 
-				#copyright ul li:first-child {
+				#colophon ul li:first-child {
 					margin-top: 0;
 				}
 
