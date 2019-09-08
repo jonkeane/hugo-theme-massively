@@ -18,8 +18,8 @@
 {{ $x667 := $bgimage.Fill "500x667" }} <!-- iphone 6/7/8 -->
 {{ $x568 := $bgimage.Fill "426x568" }} <!-- iphone 5 -->
 
-{{ $overlayGradient := safeCSS "url('/images/overlay.png'), linear-gradient(0deg, rgba(0, 0, 0, 0.8) 4em, rgba(0, 0, 0, 0) 16em)," }}
-{{ $overlayGradient := safeCSS "url('/images/overlay.png')," }}
+<!-- removing the gradient shifts the photo -->
+{{ $overlayGradient := safeCSS "url('/images/overlay.png'), linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0))," }}
 
 <style>
     /* <!-- default --> */

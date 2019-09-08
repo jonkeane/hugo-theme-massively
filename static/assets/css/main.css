@@ -4669,3 +4669,12 @@ input, select, textarea {
 .carousel-indicators {
     margin-bottom: 0;
 }
+
+/* wide button */
+.fullwidth {
+	margin: 2rem auto;
+	width: 100%;
+	font-weight: 900;
+    font-size: 2.25rem;
+    height: auto;
+}
