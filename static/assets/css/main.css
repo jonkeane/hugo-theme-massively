@@ -4677,4 +4677,5 @@ input, select, textarea {
 	font-weight: 900;
     font-size: 2.25rem;
     height: auto;
+    white-space: normal;
 }
