@@ -46,6 +46,7 @@
 
 
     /* <!-- >= 3:4 --> */
+    /* <!-- todo: how to handle pixel ratios of 2 or 3? --> */
     @media screen and (max-width: 1680px) {
         #wrapper > .bg {
     	    background-image: {{ $overlayGradient }} url("{{ $1680x.Permalink }}");
@@ -105,6 +106,7 @@
         }
     }
 
+    /* Temporarily disabled to make high pixel density devices still look ok
     @media screen and (max-height: 1024px) and (max-aspect-ratio: 7/8) {
         #wrapper > .bg {
     	    background-image: {{ $overlayGradient }} url("{{ $x1024.Permalink }}");
@@ -128,5 +130,6 @@
     	    background-image: {{ $overlayGradient }} url("{{ $x568.Permalink }}");
         }
     }
+    */
 
 </style>
