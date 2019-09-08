@@ -7,8 +7,8 @@
     <div id="theCarousel" class="carousel slide lazy" data-ride="carousel">
 
     <ol class="carousel-indicators">
-        {{ $url := .Title | printf "/images/slider/%s" }}
-        {{ $folder := .Title | printf "/static/images/slider/%s" }}
+        {{ $url := printf "/images/slider/" }}
+        {{ $folder := printf "/static/images/slider/" }}
         {{ $files := readDir $folder }}
 
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
