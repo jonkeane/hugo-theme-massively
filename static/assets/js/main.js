@@ -188,4 +188,9 @@ $(function() {
   });
 });
 
+// swipe for carousel
+$window.on('load', function() {
+    $('.carousel').bcSwipe({ threshold: 50 });
+});
+
 // TODO: https://coderwall.com/p/uf2pka/normalize-twitter-bootstrap-carousel-slide-heights normalize at least what has been seen so far.
