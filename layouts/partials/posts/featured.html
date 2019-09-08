@@ -1,10 +1,12 @@
 <!-- Featured Post -->
 {{ $data := .siteData }}
+{{ $no_dates := .no_dates }}
 {{ range .firstpost }}
+
 <article class="post featured">
     <header class="major">
-        {{ if not .Date.IsZero }}
-        <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
+        {{ if not ( or ( .Date.IsZero ) ( $no_dates ) ) }}
+            <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
         {{ end }}
         <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
         <p>{{ .Description }}</p>
