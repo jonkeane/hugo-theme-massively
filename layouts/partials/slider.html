@@ -2,13 +2,12 @@
 {{ if .Site.Params.slider.enable }}
 
 <section class="slider">
-    {{/* {{ if .Site.Data.slider }}
-    {{ if gt (len .Site.Assets.slider) 0 }} */}}
     <div id="theCarousel" class="carousel slide lazy" data-ride="carousel">
 
     <ol class="carousel-indicators">
+        {{/* TODO: automatically re-size images from a single full-res image directory */}}
         {{ $url := printf "/images/slider/" }}
-        {{ $folder := printf "/static/images/slider/" }}
+        {{ $folder := printf "/static/images/slider/2500/" }}
         {{ $files := readDir $folder }}
 
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
@@ -18,7 +17,11 @@
     <div class="carousel-inner">
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
-        	<img {{ if (lt $index 2) }}src{{ else }}data-src{{ end }}="{{$url}}/{{.Name | urlize }}" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+    	    <picture>
+    	        <source {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2500/{{.Name | urlize }} 2x, {{$url}}2048/{{.Name | urlize }} 1x" media="(min-width: 1680px)"/>
+    	        <source {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2048/{{.Name | urlize }} 2x, {{$url}}1024/{{.Name | urlize }} 1x" media="(min-width: 630px)"/>
+    	        <img {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}1024/{{.Name | urlize }} 2x, {{$url}}512/{{.Name | urlize }} 1x" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+    	    </picture>
     	</div>
 	   {{ end }}
     </div>
@@ -30,8 +33,6 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-	{{/*{{ end }}
-	{{ end }} */}}
 
     </div>
     <!-- #controllers -->

@@ -175,16 +175,27 @@
 // load the next image when the carousel is sliding
 $(function() {
   return $(".carousel.lazy").on("slid.bs.carousel", function(ev) {
-    // this should already be done, but just in case!
-    var lazy;
-    lazy = $(ev.relatedTarget).find("img[data-src]");
-    lazy.attr("src", lazy.data('src'));
-    lazy.removeAttr("data-src");
+    // function to set the src and srcset
+    set_srcset = function() {
+        child = $(this);
+        child.attr("srcset", child.data('srcset'));
+        child.removeAttr("data-srcset");
 
-    var lazynext;
-    lazynext = $(ev.relatedTarget).next().find("img[data-src]");
-    lazynext.attr("src", lazynext.data('src'));
-    lazynext.removeAttr("data-src");
+        child.attr("src", child.data('src'));
+        child.removeAttr("data-src");
+    }
+
+    // this should already be done, but just in case!
+    var pic_node;
+    pic_node = $(ev.relatedTarget).find("picture");
+    pic_children = pic_node.children();
+    pic_children.each(set_srcset);
+
+    // the next image too
+    var next_pic_node;
+    next_pic_node = $(ev.relatedTarget).next().find("picture");
+    next_pic_children = next_pic_node.children();
+    next_pic_children.each(set_srcset);
   });
 });
 
