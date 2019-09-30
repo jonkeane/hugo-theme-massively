@@ -17,10 +17,21 @@
     <div class="carousel-inner">
     	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
-    	    <picture>
-    	        <source {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2500/{{.Name | urlize }} 2x, {{$url}}2048/{{.Name | urlize }} 1x" media="(min-width: 1680px)"/>
-    	        <source {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2048/{{.Name | urlize }} 2x, {{$url}}1024/{{.Name | urlize }} 1x" media="(min-width: 630px)"/>
-    	        <img {{ if (lt $index 2) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}1024/{{.Name | urlize }} 2x, {{$url}}512/{{.Name | urlize }} 1x" class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
+    	    <picture id="theCarousel-image-{{$index}}">
+    	        <source
+    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2500/{{.Name | urlize }} 2x,
+    	                                                                        {{$url}}2048/{{.Name | urlize }} 1x"
+    	            media="(min-width: 1680px)"/>
+    	        <source
+    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2048/{{.Name | urlize }} 2x,
+    	                                                                        {{$url}}1024/{{.Name | urlize }} 1x"
+    	           media="(min-width: 630px)"/>
+    	        <source
+    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}1024/{{.Name | urlize }} 2x,
+    	                                                                        {{$url}}512/{{.Name | urlize }} 1x"
+    	           media="(min-width: 350px)"/>
+    	        <img {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}512/{{.Name | urlize }}"
+    	            class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
     	    </picture>
     	</div>
 	   {{ end }}

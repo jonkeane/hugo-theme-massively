@@ -30,6 +30,9 @@
 		$window.on('load', function() {
 			window.setTimeout(function() {
 				$body.removeClass('is-preload');
+				// start loading the second image in the slider
+                pic_children = $("#theCarousel-image-1").children();
+                pic_children.each(set_srcset);
 			}, 100);
 		});
 
@@ -171,19 +174,21 @@
 })(jQuery);
 
 
+// Bootsrape carousel/slider functions
+// function to set the src and srcset
+set_srcset = function() {
+    child = $(this);
+    child.attr("srcset", child.data('srcset'));
+    child.removeAttr("data-srcset");
+
+    child.attr("src", child.data('src'));
+    child.removeAttr("data-src");
+}
+
 // from https://coderwall.com/p/6qaeya/lazy-carousel-in-bootstrap
 // load the next image when the carousel is sliding
 $(function() {
   return $(".carousel.lazy").on("slid.bs.carousel", function(ev) {
-    // function to set the src and srcset
-    set_srcset = function() {
-        child = $(this);
-        child.attr("srcset", child.data('srcset'));
-        child.removeAttr("data-srcset");
-
-        child.attr("src", child.data('src'));
-        child.removeAttr("data-src");
-    }
 
     // this should already be done, but just in case!
     var pic_node;
@@ -199,7 +204,9 @@ $(function() {
   });
 });
 
+
 // swipe for carousel
+// TODO: prevent vertical swiping?
 $(document).ready(function() {
     $('.carousel').bcSwipe({ threshold: 50 });
 });
