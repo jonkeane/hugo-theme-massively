@@ -189,7 +189,6 @@ set_srcset = function() {
 // load the next image when the carousel is sliding
 $(function() {
   return $(".carousel.lazy").on("slid.bs.carousel", function(ev) {
-
     // this should already be done, but just in case!
     var pic_node;
     pic_node = $(ev.relatedTarget).find("picture");

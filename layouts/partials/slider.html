@@ -1,38 +1,44 @@
 {{ if isset .Site.Params "slider" }}
 {{ if .Site.Params.slider.enable }}
 
+<!-- Make resized images for responsive handling -->
+{{ $images_scratch := newScratch }}
+{{ $folder := printf "assets/slider" }}
+{{ range $index, $file := readDir $folder }}
+    {{ $image := resources.Get (printf "slider/%s" $file.Name) }}
+
+    {{ $slider_images := dict "x2500x" ( $image.Resize "2500x" ) "x2048x" ( $image.Resize "2048x" ) "x1024x" ( $image.Resize "1024x" ) "x512x" ( $image.Resize "512x" ) }}
+    {{ $images_scratch.Add "slider_images" (slice $slider_images ) }}
+{{ end }}
+
 <section class="slider">
-    <div id="theCarousel" class="carousel slide lazy" data-ride="carousel">
+    <div id="theCarousel" class="carousel slide lazy" data-ride="carousel" data-interval="10000">
 
     <ol class="carousel-indicators">
-        {{/* TODO: automatically re-size images from a single full-res image directory */}}
-        {{ $url := printf "/images/slider/" }}
-        {{ $folder := printf "/static/images/slider/2500/" }}
-        {{ $files := readDir $folder }}
 
-    	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
+    	{{ range $index, $image := $images_scratch.Get "slider_images" }}
             <li data-target="#theCarousel" data-slide-to="{{ $index }}"{{ if (eq $index 0) }}  class="active" {{ end }}></li>
         {{ end }}
     </ol>
     <div class="carousel-inner">
-    	{{ range $index, $image := where $files ".Name" "!=" ".DS_Store" }}
+    	{{ range $index, $image := $images_scratch.Get "slider_images" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
     	    <picture id="theCarousel-image-{{$index}}">
-    	        <source
-    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2500/{{.Name | urlize }} 2x,
-    	                                                                        {{$url}}2048/{{.Name | urlize }} 1x"
-    	            media="(min-width: 1680px)"/>
-    	        <source
-    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}2048/{{.Name | urlize }} 2x,
-    	                                                                        {{$url}}1024/{{.Name | urlize }} 1x"
-    	           media="(min-width: 630px)"/>
-    	        <source
-    	            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}1024/{{.Name | urlize }} 2x,
-    	                                                                        {{$url}}512/{{.Name | urlize }} 1x"
-    	           media="(min-width: 350px)"/>
-    	        <img {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{$url}}512/{{.Name | urlize }}"
-    	            class="d-block w-100" alt="{{ $url }}" title="{{ $url }}" />
-    	    </picture>
+                <source
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x2500x.Permalink }} 2x,
+                                                                        {{ $image.x2048x.Permalink }} 1x"
+            media="(min-width: 1680px)"/>
+                <source
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x2048x.Permalink }} 2x,
+                	                                                    {{ $image.x1024x.Permalink }} 1x"
+            media="(min-width: 630px)"/>
+                <source
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x1024x.Permalink }} 2x,
+                	                                                    {{ $image.x512x.Permalink }} 1x"
+            media="(min-width: 350px)"/>
+                <img {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x512x.Permalink }}"
+                class="d-block w-100" alt="{{ $image.x512x.Exif.Tags.ImageDescription }}" title="{{ $image.x512x.Exif.Tags.ImageDescription }}" />
+                    </picture>
     	</div>
 	   {{ end }}
     </div>
