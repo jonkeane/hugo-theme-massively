@@ -1,0 +1,63 @@
+{{ partial "htmlhead" . }}
+	<body lang='{{ .Site.Language.Lang | default "en-us" }}' class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+			    <div class="bg fixed"></div>
+
+                {{ partial "header" . }}
+                {{ partial "nav" . }}
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+                        <section class="page"> <!-- used to be class="post"-->
+                            <header class="major">
+                                {{ if not ( or ( .Date.IsZero ) ( .Parent.Params.no_dates ) ) }}
+                                    <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
+                                {{ end }}
+                                <h1>{{ .Title }}</h1>
+                                <p>{{ .Description }}</p>
+                            </header>
+
+                            {{ .Content }}
+
+                            {{ partial "postcustom" . }}
+
+                            <div id="nanogallery2" data-nanogallery2='{
+                               "viewerToolbar":   {
+                                   "standard":   "label, linkOriginalButton, infoButton",
+                                   "minimized":  "label, linkOriginalButton, infoButton, cart" },
+                               "viewerTools":    {
+                                    "topLeft":   "label",
+                                    "topRight":  "playPauseButton, fullscreenButton, closeButton" },
+                                "kind":             "flickr",
+                                "userID":           "{{ .Site.Params.flickr_userid }}",
+                                "thumbnailHeight":  300,
+                                "thumbnailWidth":   "auto",
+                                "album": "{{ .Params.flickr_album }}",
+                                "thumbnailBorderVertical": 0,
+                                "thumbnailBorderHorizontal": 0,
+                                "thumbnailHoverEffect2": "{{ .Site.Params.nanog.thumbnailHoverEffect2 }}",
+                                "thumbnailAlignment": "center",
+                                "thumbnailGutterWidth": 2,
+                                "thumbnailGutterHeight": 2
+                              }'>
+                            </div>
+
+
+                            {{ if not (eq .Params.disableComments true) }}
+                            {{ template "_internal/disqus.html" . }}
+                            {{ end }}
+
+					</div>
+
+                    {{ partial "footer/index" . }}
+                    {{ partial "colophon" . }}
+
+            </div>
+            {{ template "_internal/google_analytics_async.html" . }}
+            {{ partial "scripts/index" . }}
+	</body>
+</html>

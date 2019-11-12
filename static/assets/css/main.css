@@ -1,5 +1,42 @@
 @import url(font-awesome.min.css);
-@import url("https://fonts.googleapis.com/css?family=Merriweather:300,700,300italic,700italic|Source+Sans+Pro:900");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:900");
+
+
+	@font-face {
+	    font-family: 'Azuro';
+	    src: url('type/azuro-regular.eot');
+	    src: url('type/azuro-regular.eot?iefix') format('eot'),
+	         url('type/azuro-regular.woff') format('woff'),
+	         url('type/azuro-regular.ttf') format('truetype');
+	    font-weight: normal;
+	    font-style: normal; }
+
+	@font-face {
+	    font-family: 'Azuro';
+	    src: url('type/azuro-italic.eot');
+	    src: url('type/azuro-italic.eot?iefix') format('eot'),
+	         url('type/azuro-italic.woff') format('woff'),
+	         url('type/azuro-italic.ttf') format('truetype');
+	    font-weight: normal;
+	    font-style: italic; }
+
+	@font-face {
+	    font-family: 'Azuro';
+	    src: url('type/azuro-bold.eot');
+	    src: url('type/azuro-bold.eot?iefix') format('eot'),
+	         url('type/azuro-bold.woff') format('woff'),
+	         url('type/azuro-bold.ttf') format('truetype');
+	    font-weight: bold;
+	    font-style: normal; }
+
+	@font-face {
+	    font-family: 'Azuro';
+	    src: url('type/azuro-bolditalic.eot');
+	    src: url('type/azuro-bolditalic.eot?iefix') format('eot'),
+	         url('type/azuro-bolditalic.woff') format('woff'),
+	         url('type/azuro-bolditalic.ttf') format('truetype');
+	    font-weight: bold;
+	    font-style: italic; }
 
 
 /*
@@ -149,7 +186,7 @@ input, select, textarea {
 	}
 
 	body, input, select, textarea {
-		font-family: "Merriweather", Georgia, serif;
+		font-family: "Azuro", Georgia, serif;
 		font-weight: 300;
 		font-size: 1rem;
 		line-height: 2.375;
@@ -2409,7 +2446,7 @@ input, select, textarea {
 			display: inline-block;
 			font-size: 1rem;
 			letter-spacing: 0;
-			font-family: "Merriweather", Georgia, serif;
+			font-family: "Azuro", Georgia, serif;
 			text-transform: none;
 			font-weight: 300;
 			padding-left: 2.8rem;
@@ -2615,7 +2652,7 @@ input, select, textarea {
 
 		.image.main {
 			display: block;
-			margin: 4rem 0;
+			margin: 1rem 0;
 			width: 100%;
 		}
 
@@ -2926,7 +2963,7 @@ input, select, textarea {
 		}
 
 		header.major {
-			margin: 0 0 4rem 0;
+			margin: 0 0 1rem 0;
 			text-align: center;
 		}
 
@@ -3757,6 +3794,7 @@ input, select, textarea {
 		}
 
 		#main > .post {
+		    position: relative;
 			padding: 8rem 8rem 6rem 8rem ;
 		}
 
