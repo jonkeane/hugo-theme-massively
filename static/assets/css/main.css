@@ -4719,3 +4719,9 @@ input, select, textarea {
     height: auto;
     white-space: normal;
 }
+
+/* nano gallery overrides */
+
+.nGY2 .nGY2GThumbnailAlbumTitle, .nGY2 .nGY2GThumbnailImageTitle {
+    text-shadow: none;
+}

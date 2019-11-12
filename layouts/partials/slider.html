@@ -7,7 +7,7 @@
 {{ range $index, $file := readDir $folder }}
     {{ $image := resources.Get (printf "slider/%s" $file.Name) }}
 
-    {{ $slider_images := dict "x2500x" ( $image.Resize "2500x" ) "x2048x" ( $image.Resize "2048x" ) "x1024x" ( $image.Resize "1024x" ) "x512x" ( $image.Resize "512x" ) }}
+    {{ $slider_images := dict "x4095x" ( $image.Resize "4095x" ) "x3072x" ( $image.Resize "3072x" ) "x2730x" ( $image.Resize "2730x" ) "x2500x" ( $image.Resize "2500x" ) "x2048x" ( $image.Resize "2048x" ) "x1536x" ( $image.Resize "1536x" ) "x1024x" ( $image.Resize "1024x" ) "x512x" ( $image.Resize "512x" ) }}
     {{ $images_scratch.Add "slider_images" (slice $slider_images ) }}
 {{ end }}
 
@@ -24,17 +24,26 @@
     	{{ range $index, $image := $images_scratch.Get "slider_images" }}
     	<div class="carousel-item{{ if (eq $index 0) }} active{{ end }}">
     	    <picture id="theCarousel-image-{{$index}}">
+    	        <!-- max: 1365 pixels -->
                 <source
-            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x2500x.Permalink }} 2x,
-                                                                        {{ $image.x2048x.Permalink }} 1x"
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="
+            {{ $image.x4095x.Permalink }} 3x,
+            {{ $image.x2730x.Permalink }} 2x,
+            {{ $image.x1365x.Permalink }} 1x"
             media="(min-width: 1680px)"/>
+                <!-- max: 1024 pixels -->
                 <source
-            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x2048x.Permalink }} 2x,
-                	                                                    {{ $image.x1024x.Permalink }} 1x"
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="
+            {{ $image.x3072x.Permalink }} 3x,
+            {{ $image.x2048x.Permalink }} 2x,
+            {{ $image.x1024x.Permalink }} 1x"
             media="(min-width: 630px)"/>
+                <!-- max: 521 pixels -->
                 <source
-            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x1024x.Permalink }} 2x,
-                	                                                    {{ $image.x512x.Permalink }} 1x"
+            {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="
+            {{ $image.x1536x.Permalink }} 3x,
+            {{ $image.x1024x.Permalink }} 2x,
+            {{ $image.x512x.Permalink }} 1x"
             media="(min-width: 350px)"/>
                 <img {{ if (lt $index 1) }}srcset{{ else }}data-srcset{{ end }}="{{ $image.x512x.Permalink }}"
                 class="d-block w-100" alt="{{ $image.x512x.Exif.Tags.ImageDescription }}" title="{{ $image.x512x.Exif.Tags.ImageDescription }}" />
