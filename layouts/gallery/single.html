@@ -37,6 +37,9 @@
                                 "thumbnailHeight":  300,
                                 "thumbnailWidth":   "auto",
                                 "album": "{{ .Params.flickr_album }}",
+                                {{ if .Site.Params.nanog.tagBlackList }}
+                                "tagBlackList": "{{ .Site.Params.nanog.tagBlackList }}",
+                                {{ end }}
                                 "thumbnailBorderVertical": 0,
                                 "thumbnailBorderHorizontal": 0,
                                 "thumbnailHoverEffect2": "{{ .Site.Params.nanog.thumbnailHoverEffect2 }}",
