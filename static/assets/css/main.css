@@ -2964,7 +2964,7 @@ input, select, textarea {
 
 		header.major {
 			margin: 0 0 1rem 0;
-			text-align: center;
+		    /*text-align: center;*/
 		}
 
 			header.major > :last-child {
@@ -2973,7 +2973,7 @@ input, select, textarea {
 
 			header.major > p {
 				margin-top: 0;
-				text-align: center;
+				/*text-align: center;*/
 			}
 
 			header.major > .date {
@@ -3130,7 +3130,7 @@ input, select, textarea {
 		user-select: none;
 		cursor: default;
 		list-style: none;
-		margin: 0 0 2rem 2px;
+		margin: 0 0 0 2px;
 		padding: 0;
 	}
 
@@ -3790,12 +3790,13 @@ input, select, textarea {
 			}
 
 		#main > footer {
+			padding: 2rem 4rem 2rem 4rem ;
 			text-align: center;
 		}
 
 		#main > .post {
 		    position: relative;
-			padding: 8rem 8rem 6rem 8rem ;
+			padding: 2rem 8rem 1rem 8rem ;
 		}
 
 			#main > .post header.major > .date {
@@ -3809,7 +3810,7 @@ input, select, textarea {
 			}
 
 			#main > .post.featured {
-				text-align: center;
+				/*text-align: center;*/
 			}
 
 			@media screen and (max-width: 1280px) {
@@ -3852,7 +3853,7 @@ input, select, textarea {
 			-webkit-align-items: -webkit-stretch;
 			-ms-align-items: -ms-stretch;
 			align-items: stretch;
-			text-align: center;
+			/*text-align: center;*/
 			width: 100%;
 			padding: 0;
 		}
@@ -3873,7 +3874,7 @@ input, select, textarea {
 			}
 
 			#main > .posts > * {
-				padding: 4rem;
+				padding: 2rem 4rem;
 				width: 50%;
 			}
 
@@ -3882,7 +3883,7 @@ input, select, textarea {
 				border-left-width: 2px;
 				border-style: solid;
 				border-top-width: 2px;
-				text-align: center;
+				/*text-align: center;*/
 			}
 
 				#main > .posts > article > :last-child {
@@ -4725,6 +4726,10 @@ input, select, textarea {
 }
 
 /* nano gallery overrides */
+
+#nanogallery2 {
+    margin-bottom: 1rem;
+}
 
 .nGY2 .nGY2GThumbnailAlbumTitle, .nGY2 .nGY2GThumbnailImageTitle {
     text-shadow: none;
