@@ -4305,6 +4305,10 @@ input, select, textarea {
 							margin-top: -0.325rem;
 						}
 
+					#footer > section.split.contact > section.single-line {
+						padding: 1.5rem 4rem 1.5rem 4rem;
+					}
+
 		#footer form label,
 		#footer h3,
 		#footer p {
