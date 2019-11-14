@@ -9,6 +9,10 @@
 		<title>{{ if eq (.Site.Title) (.Title) }}{{ .Site.Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="keywords" content="{{ .Site.Params.meta.keywords }}" />
+        <meta name="description" content="{{ .Site.Params.meta.description }}" />
+        <meta name="robots" content="{{ .Site.Params.meta.robots }}" />
+        <meta name="googlebot" content="{{ .Site.Params.meta.googlebot }}" />
 		{{ if .Params.nanog }}
 		<link rel="stylesheet" href='{{ "assets/css/nanogallery2.min.css" | relURL }}' />
  		<link rel="stylesheet" href='{{ "assets/css/nanogallery2.woff.min.css" | relURL }}' />
