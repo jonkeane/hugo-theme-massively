@@ -3505,6 +3505,16 @@ input, select, textarea {
 
 		}
 
+		@media screen and (max-width: 480px) {
+		    #header a {
+				margin: 0 10px 0 10px;
+			}
+
+			#intro h1 {
+				font-size: 3rem;
+			}
+		}
+
 /* Header */
 
 	#header {
@@ -4490,13 +4500,14 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 480px) {
+		@media screen and (max-width: 850px) {
 
 			#colophon ul li {
 				border-left: 0;
 				margin: 1rem 0 0 0;
 				padding-left: 0;
 				display: block;
+				line-height: normal;
 			}
 
 				#colophon ul li:first-child {
@@ -4546,6 +4557,8 @@ input, select, textarea {
 			background-color: rgba(255, 255, 255, 0.875);
 			box-shadow: 0 0.125rem 0.75rem 0 rgba(30, 37, 45, 0.25);
 			color: #212931;
+			font-size: 1.25rem;
+		    transition: font-size 0.5s ease, box-shadow 0.5s ease, background-color 0.5s;
 		}
 
 			#navPanelToggle.alt:hover {
