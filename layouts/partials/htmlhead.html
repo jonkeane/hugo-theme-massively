@@ -13,7 +13,6 @@
         <meta name="description" content="{{ .Site.Params.meta.description }}" />
         <meta name="robots" content="{{ .Site.Params.meta.robots }}" />
         <meta name="googlebot" content="{{ .Site.Params.meta.googlebot }}" />
-        <meta name="google-site-verification" content="{{ .Site.Params.meta.googlesiteverification }}" />
 		{{ if .Params.nanog }}
 		<link rel="stylesheet" href='{{ "assets/css/nanogallery2.min.css" | relURL }}' />
  		<link rel="stylesheet" href='{{ "assets/css/nanogallery2.woff.min.css" | relURL }}' />
@@ -26,5 +25,7 @@
 		{{ end }}
 		<noscript><link rel="stylesheet" href='{{ "assets/css/noscript.css" | relURL }}' /></noscript>
 		{{ template "_internal/google_analytics_async.html" . }}
+        <meta name="google-site-verification" content="{{ .Site.Params.meta.googlesiteverification }}" />
+		{{ template "_internal/opengraph.html" . }}
 	</head>
 
