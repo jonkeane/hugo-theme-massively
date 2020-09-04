@@ -7,8 +7,17 @@
 {{ range $index, $file := readDir $folder }}
     {{ $image := resources.Get (printf "slider/%s" $file.Name) }}
 
-    {{ $slider_images := dict "x4095x" ( $image.Resize "4095x" ) "x3072x" ( $image.Resize "3072x" ) "x2730x" ( $image.Resize "2730x" ) "x2500x" ( $image.Resize "2500x" ) "x2048x" ( $image.Resize "2048x" ) "x1536x" ( $image.Resize "1536x" ) "x1024x" ( $image.Resize "1024x" ) "x512x" ( $image.Resize "512x" ) }}
-    {{ $images_scratch.Add "slider_images" (slice $slider_images ) }}
+    {{ if eq $image.ResourceType "image" }}
+        {{ $slider_images := dict "x4095x" ( $image.Resize "4095x" ) }}
+        {{ $slider_images = merge $slider_images (dict "x3072x" ( $image.Resize "3072x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x2730x" ( $image.Resize "2730x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x2500x" ( $image.Resize "2500x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x2048x" ( $image.Resize "2048x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x1536x" ( $image.Resize "1536x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x1024x" ( $image.Resize "1024x" ) ) }}
+        {{ $slider_images = merge $slider_images (dict "x512x" ( $image.Resize "512x" ) ) }}
+        {{ $images_scratch.Add "slider_images" (slice $slider_images ) }}
+    {{ end }}
 {{ end }}
 
 <section class="slider">
