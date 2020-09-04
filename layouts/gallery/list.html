@@ -35,7 +35,7 @@
 					<div id="main">
 					    {{ .Content }}
 
-						{{ if (eq $postsFeaturedPostEnabled true) }}
+						{{ if and (eq $postsFeaturedPostEnabled true) (eq .Paginator.PageNumber 1) }}
 						{{ partial "gallerys/featured.html" (dict "firstpost" $firstPost "no_dates" $no_dates "siteData" (index .Site.Data .Site.Language.Lang)) }}
 						{{ end }}
 
