@@ -28,7 +28,7 @@
                     {{ $x900x.Permalink }} 2x,
                     {{ $x400x.Permalink }} 1x"
             media="(min-width: 350px)"/>
-            <img src="{{ $x900x.Permalink }}">
+            <img src="{{ $x900x.Permalink }}"  alt = "{{ $x900x.Exif.Tags.ImageDescription }}">
         </picture>
     </a>
     {{ end }}
