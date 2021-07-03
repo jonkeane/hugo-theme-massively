@@ -30,15 +30,18 @@
                                    "standard":   "label, linkOriginalButton, infoButton",
                                    "minimized":  "label, linkOriginalButton, infoButton, cart" },
                                "viewerTools":    {
-                                    "topLeft":   "label",
-                                    "topRight":  "playPauseButton, fullscreenButton, closeButton" },
+                                    "topLeft":   "",
+                                    "fnPopupMediaInfo": "title",
+                                    "topRight":  "info, playPauseButton, fullscreenButton, closeButton" },
                                 "kind":             "flickr",
                                 "userID":           "{{ .Site.Params.nanog.flickr_userid }}",
+                                "flickrAPIKey":     "{{ .Site.Params.nanog.flickr_apikey }}",
                                 "thumbnailHeight":  300,
                                 "thumbnailWidth":   "auto",
+                                "viewerZoom":       false,
                                 "album": "{{ .Params.flickr_album }}",
-                                {{ if .Site.Params.nanog.tagBlackList }}
-                                "tagBlackList": "{{ .Site.Params.nanog.tagBlackList }}",
+                                {{ if .Site.Params.nanog.tagBlockList }}
+                                "tagBlockList": "{{ .Site.Params.nanog.tagBlockList }}",
                                 {{ end }}
                                 "thumbnailBorderVertical": 0,
                                 "thumbnailBorderHorizontal": 0,
