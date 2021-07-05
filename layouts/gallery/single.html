@@ -69,16 +69,23 @@
 									      }
 												content += '</div>'
 												var sexif = '';
-									      if( item.exif.model != '' ) {
-									        sexif  += '📷' + ' &nbsp;' + item.exif.model;
+									      if( item.exif.model != '' || item.exif.lens != '' ) {
+									        sexif  += '📷' 
+													sexif += item.exif.model  == '' ? '' : '&nbsp;' + item.exif.model 
+													if( item.exif.model != '' && item.exif.lens != '' ) {
+														sexif += '&nbsp;·'
+													}
+													sexif += item.exif.lens  == '' ? '' : '&nbsp;' + item.exif.lens;
 									      }
 									      if( item.exif.focallength != '' || item.exif.fstop != '' || item.exif.exposure != '' || item.exif.iso != '' || item.exif.time != '' ) {
 												sexif += '<br/>';
 												sexif += '📸';
-									      sexif += item.exif.focallength == '' ? '' : ' &nbsp; ' + item.exif.focallength;
-												sexif += item.exif.exposure == '' ? '' : ' &nbsp; ' + item.exif.exposure+'s';
-									      sexif += item.exif.fstop == '' ? '' : ' &nbsp; f/' + item.exif.fstop;
-									      sexif += item.exif.iso == '' ? '' : ' &nbsp; ' + item.exif.iso+'iso';
+												var sexif_items = [];
+									      sexif_items.push(item.exif.focallength == '' ? '' : '&nbsp; ' + item.exif.focallength);
+												sexif_items.push(item.exif.exposure == '' ? '' : '&nbsp; ' + item.exif.exposure+'s');
+									      sexif_items.push(item.exif.fstop == '' ? '' : '&nbsp; f/' + item.exif.fstop);
+									      sexif_items.push(item.exif.iso == '' ? '' : '&nbsp; ' + item.exif.iso+'iso');
+												sexif += sexif_items.join('&nbsp;·')
 												if( item.exif.flash != '' ) {
 													sexif += '<br>';
 													sexif += item.exif.flash == '' ? '' : 'flash: ' + item.exif.flash;
@@ -87,7 +94,7 @@
 													sexif += '<br/>';
 									        // var date = new Date(parseInt(item.exif.time));
 									        // sexif += ' &nbsp; '+date.toLocaleDateString();
-									        sexif += 'Captured at &nbsp; ' + item.exif.time;
+									        sexif += 'Captured at&nbsp; ' + item.exif.time;
 									      }
 									      }
 												content += '<div class="nGY2PopupOneItemText">' + sexif + '</div>';
