@@ -13,6 +13,7 @@
 
 						<!-- Post -->
                         <section class="page"> <!-- used to be class="post"-->
+							<a href=".." class="button", id="galleryBackBtn">back to gallery</a>
                             <header class="major">
                                 {{ if not ( or ( .Date.IsZero ) ( .Parent.Params.no_dates ) ) }}
                                     <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
@@ -70,8 +71,8 @@
 												content += '</div>'
 												var sexif = '';
 									      if( item.exif.model != '' || item.exif.lens != '' ) {
-									        sexif  += '📷' 
-													sexif += item.exif.model  == '' ? '' : '&nbsp;' + item.exif.model 
+									        sexif  += '📷'
+													sexif += item.exif.model  == '' ? '' : '&nbsp;' + item.exif.model
 													if( item.exif.model != '' && item.exif.lens != '' ) {
 														sexif += '&nbsp;·'
 													}

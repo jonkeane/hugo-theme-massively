@@ -12,6 +12,7 @@
 		$header = $('#header'),
 		$nav = $('#nav'),
 		$main = $('#main'),
+		$nanogallery = $('#nanogallery2'),
 		$navPanelToggle, $navPanel, $navPanelInner;
 
 	// Breakpoints.
@@ -169,6 +170,22 @@
 
 			});
 
+		}
+	// Gallery back button
+		var $galleryBackToggle = $('#galleryBackBtn');
+		if ($galleryBackToggle.length > 0) {
+			$main.unscrollex();
+
+			// Change toggle styling once we've scrolled past the header.
+			$nanogallery.scrollex({
+				mode: 'top',
+				enter: function() {
+					$galleryBackToggle.addClass('alt');
+				},
+				leave: function() {
+					$galleryBackToggle.removeClass('alt');
+				}
+			});
 		}
 
 })(jQuery);
