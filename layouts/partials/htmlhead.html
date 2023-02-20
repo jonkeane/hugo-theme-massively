@@ -19,6 +19,7 @@
  		{{ end }}
 		<link rel="stylesheet" href='{{ "assets/css/bootstrap.min.css" | relURL }}' />
 		<link rel="stylesheet" href='{{ "assets/css/main.css" | relURL }}' />
+		<link rel="stylesheet" href='{{ "assets/css/customizations.css" | relURL }}' />
         {{ partial "bg" . }}
 		{{ with .Site.Params.favicon }}
 		<link rel="shortcut icon" href="{{ . }}">
@@ -28,4 +29,3 @@
         <meta name="google-site-verification" content="{{ .Site.Params.meta.googlesiteverification }}" />
 		{{ template "_internal/opengraph.html" . }}
 	</head>
-
