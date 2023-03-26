@@ -8,7 +8,7 @@
         {{ if not ( or ( .Date.IsZero ) ( $no_dates ) ) }}
             <span class="date">{{ .Date.Format (.Site.Params.DateFormat | default "January 2, 2006") }}</span>
         {{ end }}
-        <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
     </header>
     {{ if .Params.image }}
     {{ $image := resources.Get .Params.image }}
@@ -16,25 +16,25 @@
     {{ $x1800x := $image.Resize "1800x" }}
     {{ $x900x := $image.Resize "900x" }}
     {{ $x400x := $image.Resize "400x" }}
-    <a href="{{ .Permalink }}" class="image main">
+    <a href="{{ .RelPermalink }}" class="image main">
         <picture>
             <source
-            srcset="{{ $x2700x.Permalink }} 3x,
-                    {{ $x1800x.Permalink }} 2x,
-                    {{ $x900x.Permalink }} 1x"
+            srcset="{{ $x2700x.RelPermalink }} 3x,
+                    {{ $x1800x.RelPermalink }} 2x,
+                    {{ $x900x.RelPermalink }} 1x"
             media="(min-width: 630px)"/>
                 <source
-            srcset="{{ $x1800x.Permalink }} 3x,
-                    {{ $x900x.Permalink }} 2x,
-                    {{ $x400x.Permalink }} 1x"
+            srcset="{{ $x1800x.RelPermalink }} 3x,
+                    {{ $x900x.RelPermalink }} 2x,
+                    {{ $x400x.RelPermalink }} 1x"
             media="(min-width: 350px)"/>
-            <img src="{{ $x900x.Permalink }}"  alt = "{{ $x900x.Exif.Tags.ImageDescription }}">
+            <img src="{{ $x900x.RelPermalink }}"  alt = "{{ $x900x.Exif.Tags.ImageDescription }}">
         </picture>
     </a>
     {{ end }}
     <p>{{ .Description }}</p>
     <ul class="actions">
-        <li><a href="{{ .Permalink }}" class="button big">{{ $data.post.linktext }}</a></li>
+        <li><a href="{{ .RelPermalink }}" class="button big">{{ $data.post.linktext }}</a></li>
     </ul>
 </article>
 {{ end }}

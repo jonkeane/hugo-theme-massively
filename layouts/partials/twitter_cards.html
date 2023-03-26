@@ -2,8 +2,11 @@
 
 {{- with $.Params.image -}}
 <!-- Specifically to grab that (resized) gallery images -->
+<!-- Must ultimately match one of what's in the gallery itself -->
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="{{ $image := resources.Get . }}{{ $x1200x := $image.Resize "1200x" }}{{ $x1200x.Permalink}}"/>
+{{ $image := resources.Get . }}
+{{ $x1600x := $image.Resize "1800x" }}
+<meta name="twitter:image" content="{{ $x1600x.Permalink}}"/>
 {{- else -}}
 {{- with $.Params.images -}}
 <meta name="twitter:card" content="summary_large_image"/>
