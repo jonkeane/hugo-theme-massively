@@ -5,10 +5,9 @@
 
 {{- with $.Params.image -}}
 <!-- Specifically to grab that (resized) gallery images -->
-<!-- Must ultimately match one of what's in the gallery itself -->
 {{ $image := resources.Get . }}
-{{ $x1600x := $image.Resize "1800x" }}
-<meta property="og:image" content="{{ $x1600x.Permalink}}" />
+{{ $x1200x := $image.Resize "1200x" }}
+<meta property="og:image" content="{{ $x1200x.RelPermalink | absURL }}" />
 {{- else -}}
 {{- with $.Params.images -}}
 {{- range first 6 . }}<meta property="og:image" content="{{ . | absURL }}" />{{ end -}}
