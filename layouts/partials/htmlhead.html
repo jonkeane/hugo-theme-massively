@@ -27,6 +27,7 @@
 		<noscript><link rel="stylesheet" href='{{ "assets/css/noscript.css" | relURL }}' /></noscript>
 		{{ template "_internal/google_analytics.html" . }}
         <meta name="google-site-verification" content="{{ .Site.Params.meta.googlesiteverification }}" />
-		{{ template "_internal/opengraph.html" . }}
+		{{ template "partials/opengraph.html" . }}
+		{{ template "partials/twitter_cards.html" . }}
 		<link rel="me" href="https://fosstodon.org/@jonkeane" />
 	</head>
