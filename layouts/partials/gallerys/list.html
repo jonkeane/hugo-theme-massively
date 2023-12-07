@@ -3,7 +3,7 @@
 {{ $no_dates := .no_dates }}
 
 <section class="posts">
-    {{ range .posts.Pages }}
+    {{ range where .posts.Pages "Params.private" "ne" true  }}
     <article>
         <header>
             {{ if not ( or ( .Date.IsZero ) ( $no_dates ) ) }}
