@@ -10,7 +10,7 @@
 		{{ $postsFeaturedPostEnabled := .Scratch.Get "postsFeaturedPostEnabled" }}
 		{{ $no_dates := .Params.no_dates }}
 
-		{{ $posts := .Pages  }}
+		{{ $posts := where .Pages "Params.private" "ne" true  }}
 
 		{{ $firstPost := first 1 $posts }}
 
