@@ -1,4 +1,4 @@
-/* nanogallery2 - v3.0.5 - 2023-11-22 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.5 - 2024-03-09 - https://nanogallery2.nanostudio.org */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -471,7 +471,7 @@
             this.tags =                 [];       // list of tags of the current item
             this.albumTagList =         [];       // list of all the tags of the items contained in the current album
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
-            this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
+            this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', lens: '', time: '', location: ''};
             this.deleted =              false;    // item is deleted -> do not display anymore
             this.rotationAngle =        0;        // image display rotation angle
           }
@@ -6399,6 +6399,8 @@
         // EXIF DATA
         // Exif - model
         if( item.exifModel !== undefined ) { newItem.exif.model = item.exifModel; }
+        // Exif - lens
+        if( item.exifLens !== undefined ) { newItem.exif.lens = item.exifLens; }
         // Exif - flash
         if( item.exifFlash !== undefined ) { newItem.exif.flash = item.exifFlash; }
         // Exif - focallength
@@ -6407,9 +6409,9 @@
         if( item.exifFStop !== undefined ) { newItem.exif.fstop = item.exifFStop; }
         // Exif - exposure
         if( item.exifExposure !== undefined ) { newItem.exif.exposure = item.exifExposure; }
-        // Exif - time
-        if( item.exifIso !== undefined ) { newItem.exif.iso = item.exifIso; }
         // Exif - iso
+        if( item.exifIso !== undefined ) { newItem.exif.iso = item.exifIso; }
+        // Exif - time
         if( item.exifTime !== undefined ) { newItem.exif.time = item.exifTime; }
         // Exif - location
         if( item.exifLocation !== undefined ) { newItem.exif.location  = item.exifLocation; }
@@ -6481,6 +6483,7 @@
           'data-ngimagedominantcolors':   null,       // image dominant colors
           'data-ngimagedominantcolor':    null,       // image dominant colors
           'data-ngexifmodel':             '',         // EXIF data
+          'data-ngexiflens':              '',
           'data-ngexifflash':             '',
           'data-ngexiffocallength':       '',
           'data-ngexiffstop':             '',
@@ -6662,6 +6665,8 @@
 
         // Exif - model
         newItem.exif.model=data['data-ngexifmodel'];
+        // Exif - lens
+        newItem.exif.lens=data['data-ngexiflens'];
         // Exif - flash
         newItem.exif.flash=data['data-ngexifflash'];
         // Exif - focallength
@@ -8402,7 +8407,7 @@
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)
+      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
@@ -9336,8 +9341,9 @@
         content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.config + ' ' + ng2item.exif.model + '</div>';
       }
       var sexif = G.O.icons.picture + ':';
-      if( ng2item.exif.flash != '' || ng2item.exif.focallength != '' || ng2item.exif.fstop != '' || ng2item.exif.exposure != '' || ng2item.exif.iso != '' || ng2item.exif.time != '' ) {
+      if( ng2item.exif.lens != '' || ng2item.exif.flash != '' || ng2item.exif.focallength != '' || ng2item.exif.fstop != '' || ng2item.exif.exposure != '' || ng2item.exif.iso != '' || ng2item.exif.time != '' ) {
       sexif += '<br>';
+      sexif += ng2item.exif.lens == '' ? '' : ' &nbsp; ' + ng2item.exif.lens;
       sexif += ng2item.exif.flash == '' ? '' : ' &nbsp; ' + ng2item.exif.flash;
       sexif += ng2item.exif.focallength == '' ? '' : ' &nbsp; ' + ng2item.exif.focallength+'mm';
       sexif += ng2item.exif.fstop == '' ? '' : ' &nbsp; f' + ng2item.exif.fstop;
@@ -15968,6 +15974,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
   // });
 }).call(null);
 
+
 /**!
  * @preserve nanogallery2 - NANOPHOTOSPROVIDER2 data provider
  * Homepage: http://nanogallery2.nanostudio.org
@@ -16605,9 +16612,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
  * License:  GPLv3 and commercial licence
- *
+ * 
 */
-
+ 
 // ############################################
 // ##### nanogallery2 - module for FLICKR #####
 // ############################################
@@ -16627,7 +16634,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
     }
 }(function ($) {
 // ;(function ($) {
-
+  
   jQuery.nanogallery2.data_flickr = function (instance, fnName){
     var G = instance;      // current nanogallery2 instance
 
@@ -16645,8 +16652,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
       photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o')
     };
-
-
+    
+    
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
       if( G.O.flickrAPIKey == '' ) {
@@ -16673,24 +16680,24 @@ if (typeof define === 'function' && define.amdDISABLED) {
           }
 
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
-
+          
       PreloaderDisplay(true);
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
-
+      
       var tId = setTimeout( function() {
         // workaround to handle JSONP (cross-domain) errors
         PreloaderDisplay(false);
         NanoAlert(G, 'Could not retrieve AJAX data...');
       }, 60000 );
-
+      
       var sourceData=[];
 
       // Process the downloaded data
       var FlickrGetDone = function() {
         clearTimeout(tId);
         PreloaderDisplay(false);
-
+        
         // go through sourceData, and exclude blacklisted tags
         sourceData = FilterByTags(sourceData, G.O.tagBlockList);
 
@@ -16700,14 +16707,14 @@ if (typeof define === 'function' && define.amdDISABLED) {
         else {
           FlickrParsePhotos(albumIdx, albumID, sourceData);
         }
-
+        
         AlbumPostProcess( albumID );
-
+        
         if( fnToCall !== null &&  fnToCall !== undefined) {
           fnToCall( fnParam1, fnParam2, null );
         }
       }
-
+      
       // download one page of data (=500 entries)
       var FlickrGetOnePage = function( url, page ) {
         jQuery.getJSON( url + '&page=' + page + '&jsoncallback=?', function(data, status, xhr) {
@@ -16739,9 +16746,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
               sourceData=sourceData.concat(data.photoset.photo);
               pages=data.photoset.pages;
             }
-
+            
           }
-
+          
           if( pages > page ) {
             FlickrGetOnePage(url, page+1);
           }
@@ -16756,9 +16763,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
         });
 
       }
-
+      
       FlickrGetOnePage(url, 1);
-
+      
     }
 
 
@@ -16780,27 +16787,30 @@ if (typeof define === 'function' && define.amdDISABLED) {
       jQuery.getJSON( url + '&jsoncallback=?' , function(data, status, xhr) {
               // Exif - model
               if( data.photo.camera !== undefined ) { newItem.exif.model = data.photo.camera; }
+              // Exif - lens
+              var lens = data.photo.exif.filter(function(exif) {return exif.tag == "LensModel"})
+              if( lens.length >= 1 ) { newItem.exif.lens = lens[0].raw._content; }
               // Exif - flash
               var flash = data.photo.exif.filter(function(exif) {return exif.tag == "Flash"})
-              if( flash.length == 1 ) { newItem.exif.flash = flash[0].raw._content; }
+              if( flash.length >= 1 ) { newItem.exif.flash = flash[0].raw._content; }
               // Exif - focallength
               var fl = data.photo.exif.filter(function(exif) {return exif.tag == "FocalLength"});
-              if( fl.length == 1 ) { newItem.exif.focallength = fl[0].raw._content; }
+              if( fl.length >= 1 ) { newItem.exif.focallength = fl[0].raw._content; }
               // Exif - fstop
               var fstop = data.photo.exif.filter(function(exif) {return exif.tag == "FNumber"});
-              if( fstop.length == 1 ) { newItem.exif.fstop = fstop[0].raw._content; }
+              if( fstop.length >= 1 ) { newItem.exif.fstop = fstop[0].raw._content; }
               // Exif - exposure
               var exposure = data.photo.exif.filter(function(exif) {return exif.tag == "ExposureTime"});
-              if( exposure.length == 1 ) { newItem.exif.exposure = exposure[0].raw._content; }
+              if( exposure.length >= 1 ) { newItem.exif.exposure = exposure[0].raw._content; }
               // Exif - iso
               var iso = data.photo.exif.filter(function(exif) {return exif.tag == "ISO"});
-              if( iso.length == 1 ) { newItem.exif.iso = iso[0].raw._content; }
+              if( iso.length >= 1 ) { newItem.exif.iso = iso[0].raw._content; }
               // Exif - time
               var time = data.photo.exif.filter(function(exif) {return exif.tag == "DateTimeOriginal"});
-              if( time.length == 1 ) { newItem.exif.time = time[0].raw._content; }
+              if( time.length >= 1 ) { newItem.exif.time = time[0].raw._content; }
               // Exif - location
               var location = data.photo.exif.filter(function(exif) {return exif.tag == "LOLcation"});
-              if( location.length == 1 ) { newItem.exif.location  = location[0].raw._content; }
+              if( location.length >= 1 ) { newItem.exif.location  = location[0].raw._content; }
 
               // author
               var author = data.photo.exif.filter(function(exif) {return exif.tag == "OwnerName"});
@@ -16812,16 +16822,16 @@ if (typeof define === 'function' && define.amdDISABLED) {
       })
     }
 
-
+    
     // -----------
     // Retrieve items for one Flickr photoset
     function FlickrParsePhotos( albumIdx, albumID, source ) {
 
-      if( G.O.debugMode ) {
+      if( G.O.debugMode ) { 
         console.log('Flickr parse photos:');
-        console.dir(source);
+        console.dir(source);    
       }
-
+      
       jQuery.each(source, function(i,item){
 
         var itemID = item.id;
@@ -16836,7 +16846,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
 
         // get the description
         var itemDescription=item.description._content;
-
+        
         // retrieve the image size with highest available resolution
         var imgW=75, imgH=75;
         var start=Flickr.photoAvailableSizesStr.length-1;
@@ -16856,7 +16866,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
             sizes[p]=item[p];
           }
         }
-
+        
         // tags
         var tags = item.tags !== undefined ? item.tags : '';
 
@@ -16873,7 +16883,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
         newItem.imageWidth = imgW;
         newItem.imageHeight = imgH;
 
-
+        
         // add thumbnails
         var tn = {
           url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
@@ -16883,36 +16893,36 @@ if (typeof define === 'function' && define.amdDISABLED) {
         tn = FlickrRetrieveImages(tn, item, 'l1' );
         tn = FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
-
+        
         // post-process callback
         var fu = G.O.fnProcessData;
         if( fu !== null ) {
           typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
         }
-
+        
 
       });
       G.I[albumIdx].contentIsLoaded=true;
+      
+    }    
 
-    }
 
-
-
+    
     // -----------
     // Retrieve the list of Flickr photosets
     function FlickrParsePhotoSets( albumIdx, albumID, source ) {
 
-      if( G.O.debugMode ) {
+      if( G.O.debugMode ) { 
         console.log('Flickr parse list of albums:');
-        console.dir(source);
+        console.dir(source);    
       }
 
       jQuery.each(source, function(i,item){
         //Get the title
         var itemTitle = item.title._content;
-
+        
         if( item.visibility_can_see_set == 0 ) { return true; }    // skip it
-
+        
         if( FilterAlbumName(itemTitle, item.id) ) {
           var itemID=item.id;
           //Get the description
@@ -16928,11 +16938,11 @@ if (typeof define === 'function' && define.amdDISABLED) {
               tags = item.primary_photo_extras.tags;
             }
           }
-
+        
           var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'album', tags );
           newItem.numberItems = item.photos;
           newItem.thumbSizes = sizes;
-
+          
           var tn = {
             url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
             width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
@@ -16947,10 +16957,10 @@ if (typeof define === 'function' && define.amdDISABLED) {
           if( fu !== null ) {
             typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
           }
-
+          
         }
       });
-
+      
       G.I[albumIdx].contentIsLoaded=true;
     }
 
@@ -16960,8 +16970,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       if( G.tn.opt[level].crop === true ) {
         sf=G.O.thumbnailCropScaleFactor;
       }
-
-
+    
+    
       var sizes=['xs','sm','me','la','xl'];
       for( var i=0; i<sizes.length; i++ ) {
         if( G.tn.settings.width[level][sizes[i]] == 'auto' || G.tn.settings.width[level][sizes[i]] == '' ) {
@@ -16972,7 +16982,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
           tn.width[level][sizes[i]]=one.width;
           tn.height[level][sizes[i]]=one.height;
         }
-        else
+        else 
           if( G.tn.settings.height[level][sizes[i]] == 'auto' || G.tn.settings.height[level][sizes[i]] == '' ) {
             let sdir='width_';
             let tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
@@ -16996,7 +17006,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       }
       return tn;
     }
-
+    
     function FlickrRetrieveOneImage(sdir, tsize, item ) {
       var one={ url: '', width: 0, height: 0 };
       var tnIndex=0;
@@ -17015,7 +17025,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       one.height = parseInt(item['height_'+fSize]);
       return one;
     }
-
+    
     var FilterByTags = function(data, tagBlockList) {
       if( tagBlockList!= '' && data != undefined) {
         data = data.filter(function (item) {
@@ -17029,11 +17039,11 @@ if (typeof define === 'function' && define.amdDISABLED) {
       }
       return data;
     };
-
+    
     /** @function GetHiddenAlbums */
     // var GetHiddenAlbums = function( hiddenAlbums, callback ){
       // not supported -> doesn't exit in Flickr
-      // callback();
+      // callback();     
     // }
 
     // -----------
@@ -17071,7 +17081,10 @@ if (typeof define === 'function' && define.amdDISABLED) {
     }
 
   };
-
+  
 // END FLICKR DATA SOURCE FOR NANOGALLERY2
 // }( jQuery ));
 }));
+
+  
+  
