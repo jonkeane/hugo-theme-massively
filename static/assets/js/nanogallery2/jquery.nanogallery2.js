@@ -1,4 +1,4 @@
-/* nanogallery2 - v3.0.5 - 2024-03-09 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.5 - 2024-03-14 - https://nanogallery2.nanostudio.org */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -1352,6 +1352,7 @@
     locationHash :                true,
     slideshowDelay :              3000,
     slideshowAutoStart :          false,
+    minimalSlug :                 false,
 
     debugMode:                    false,
 
@@ -8131,6 +8132,10 @@
 
       var currentURL=document.location.protocol + '//' + document.location.hostname + document.location.pathname;
       var newLocationHash = '#nanogallery/' + G.baseEltID + '/';
+      if ( G.O.minimalSlug ) {
+        newLocationHash = '#'+ albumID;
+      }
+
       if( item.kind == 'image' ) {
         newLocationHash += item.albumID + '/' + item.GetID();
       }
@@ -8407,7 +8412,7 @@
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
@@ -9712,7 +9717,7 @@
       }
 
       // SetLocationHash( next_ng2item.albumID, next_ng2item.GetID() );
-      SetLocationHash( new_content_item.NGY2Item().albumID, new_content_item.NGY2Item().GetID() );
+      SetLocationHash( new_content_item.NGY2Item().albumID, new_content_item.NGY2Item().GetID(), new_content_item.NGY2Item().static_photo );
 
       if( displayType == '' ) {
         // first media -> no transition -> exit
@@ -10037,6 +10042,11 @@
         G.VOM.viewerDisplayed = false;
 
         if( G.O.lightboxStandalone ) { return; }
+
+        // Remove the og image query paramaer
+        const url = new URL(top.location.href);
+        url.searchParams.delete('og');
+        top.history.replaceState({}, '', url.toString());
 
         if( G.O.thumbnailAlbumDisplayImage ) {
           // content of album displayed directly in lightbox (no gallery display for album content)
@@ -10590,8 +10600,11 @@
       // standard use case -> location hash processing
       if( !G.O.locationHash ) { return false; }
 
-      var curGal = '#nanogallery/' + G.baseEltID + '/',
-      newLocationHash = location.hash;
+      var curGal = '#nanogallery/' + G.baseEltID + '/';
+      if ( G.O.minimalSlug ) {
+        curGal = '#';
+      }
+      var newLocationHash = location.hash;
       if( G.O.debugMode ) {
         console.log('------------------------ PROCESS LOCATION HASH');
         console.log('newLocationHash1: ' +newLocationHash);
@@ -10631,7 +10644,7 @@
     }
 
     //---- Set a new browser location hash
-    function SetLocationHash(albumID, imageID ) {
+    function SetLocationHash(albumID, imageID, imageStatic = '' ) {
       if( !G.O.locationHash || G.O.lightboxStandalone ) { return false; }
 
       if( G.O.debugMode ) {
@@ -10655,6 +10668,9 @@
       }
 
       var newLocationHash='#'+'nanogallery/'+G.baseEltID+'/'+ albumID;
+      if ( G.O.minimalSlug ) {
+        newLocationHash = '#'+ albumID;
+      }
       if( imageID != '' ) {
         newLocationHash+='/'+imageID;
       }
@@ -10669,6 +10685,14 @@
       if( G.O.debugMode ) { console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed); }
 
       if(  lH == '' || lH != newLocationHash ) {
+        // if there imageStatic is passed, add it as an og query parameter
+        // this can be used (with a bit more information) to add this specific
+        // image to open graph image (e.g. with netlify edge functions)
+        if( imageStatic != '' ) {
+          const url = new URL(top.location.href);
+          url.searchParams.set('og', imageStatic);
+          top.history.replaceState({}, '', url.toString());
+        }
         // G.locationHashLastUsed='#'+newLocationHash;
         try {
           top.location.hash=newLocationHash;
@@ -15974,7 +15998,6 @@ if (typeof define === 'function' && define.amdDISABLED) {
   // });
 }).call(null);
 
-
 /**!
  * @preserve nanogallery2 - NANOPHOTOSPROVIDER2 data provider
  * Homepage: http://nanogallery2.nanostudio.org
@@ -16612,9 +16635,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
  * License:  GPLv3 and commercial licence
- * 
+ *
 */
- 
+
 // ############################################
 // ##### nanogallery2 - module for FLICKR #####
 // ############################################
@@ -16634,7 +16657,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
     }
 }(function ($) {
 // ;(function ($) {
-  
+
   jQuery.nanogallery2.data_flickr = function (instance, fnName){
     var G = instance;      // current nanogallery2 instance
 
@@ -16652,8 +16675,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
       photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o')
     };
-    
-    
+
+
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
       if( G.O.flickrAPIKey == '' ) {
@@ -16680,24 +16703,24 @@ if (typeof define === 'function' && define.amdDISABLED) {
           }
 
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
-          
+
       PreloaderDisplay(true);
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
-      
+
       var tId = setTimeout( function() {
         // workaround to handle JSONP (cross-domain) errors
         PreloaderDisplay(false);
         NanoAlert(G, 'Could not retrieve AJAX data...');
       }, 60000 );
-      
+
       var sourceData=[];
 
       // Process the downloaded data
       var FlickrGetDone = function() {
         clearTimeout(tId);
         PreloaderDisplay(false);
-        
+
         // go through sourceData, and exclude blacklisted tags
         sourceData = FilterByTags(sourceData, G.O.tagBlockList);
 
@@ -16707,14 +16730,14 @@ if (typeof define === 'function' && define.amdDISABLED) {
         else {
           FlickrParsePhotos(albumIdx, albumID, sourceData);
         }
-        
+
         AlbumPostProcess( albumID );
-        
+
         if( fnToCall !== null &&  fnToCall !== undefined) {
           fnToCall( fnParam1, fnParam2, null );
         }
       }
-      
+
       // download one page of data (=500 entries)
       var FlickrGetOnePage = function( url, page ) {
         jQuery.getJSON( url + '&page=' + page + '&jsoncallback=?', function(data, status, xhr) {
@@ -16746,9 +16769,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
               sourceData=sourceData.concat(data.photoset.photo);
               pages=data.photoset.pages;
             }
-            
+
           }
-          
+
           if( pages > page ) {
             FlickrGetOnePage(url, page+1);
           }
@@ -16763,9 +16786,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
         });
 
       }
-      
+
       FlickrGetOnePage(url, 1);
-      
+
     }
 
 
@@ -16822,16 +16845,15 @@ if (typeof define === 'function' && define.amdDISABLED) {
       })
     }
 
-    
     // -----------
     // Retrieve items for one Flickr photoset
     function FlickrParsePhotos( albumIdx, albumID, source ) {
 
-      if( G.O.debugMode ) { 
+      if( G.O.debugMode ) {
         console.log('Flickr parse photos:');
-        console.dir(source);    
+        console.dir(source);
       }
-      
+
       jQuery.each(source, function(i,item){
 
         var itemID = item.id;
@@ -16846,7 +16868,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
 
         // get the description
         var itemDescription=item.description._content;
-        
+
         // retrieve the image size with highest available resolution
         var imgW=75, imgH=75;
         var start=Flickr.photoAvailableSizesStr.length-1;
@@ -16866,7 +16888,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
             sizes[p]=item[p];
           }
         }
-        
+
         // tags
         var tags = item.tags !== undefined ? item.tags : '';
 
@@ -16883,7 +16905,16 @@ if (typeof define === 'function' && define.amdDISABLED) {
         newItem.imageWidth = imgW;
         newItem.imageHeight = imgH;
 
-        
+        // add path + filename for image
+        // these should be at least 1200, so go in this order:
+        // h 1600
+        // k 2048
+        // l 1024 (flickr undocumented, but retrieved)
+        // b 1024 (flicker documented, but generally not present)
+        const arr = [item.url_h, item.url_k, item.url_l, item.url_b];
+        newItem.static_photo = arr.find(el => el).replace( "https://live.staticflickr.com/", "" );
+
+
         // add thumbnails
         var tn = {
           url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
@@ -16893,36 +16924,36 @@ if (typeof define === 'function' && define.amdDISABLED) {
         tn = FlickrRetrieveImages(tn, item, 'l1' );
         tn = FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
-        
+
         // post-process callback
         var fu = G.O.fnProcessData;
         if( fu !== null ) {
           typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
         }
-        
+
 
       });
       G.I[albumIdx].contentIsLoaded=true;
-      
-    }    
+
+    }
 
 
-    
+
     // -----------
     // Retrieve the list of Flickr photosets
     function FlickrParsePhotoSets( albumIdx, albumID, source ) {
 
-      if( G.O.debugMode ) { 
+      if( G.O.debugMode ) {
         console.log('Flickr parse list of albums:');
-        console.dir(source);    
+        console.dir(source);
       }
 
       jQuery.each(source, function(i,item){
         //Get the title
         var itemTitle = item.title._content;
-        
+
         if( item.visibility_can_see_set == 0 ) { return true; }    // skip it
-        
+
         if( FilterAlbumName(itemTitle, item.id) ) {
           var itemID=item.id;
           //Get the description
@@ -16938,11 +16969,11 @@ if (typeof define === 'function' && define.amdDISABLED) {
               tags = item.primary_photo_extras.tags;
             }
           }
-        
+
           var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'album', tags );
           newItem.numberItems = item.photos;
           newItem.thumbSizes = sizes;
-          
+
           var tn = {
             url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
             width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
@@ -16957,10 +16988,10 @@ if (typeof define === 'function' && define.amdDISABLED) {
           if( fu !== null ) {
             typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
           }
-          
+
         }
       });
-      
+
       G.I[albumIdx].contentIsLoaded=true;
     }
 
@@ -16970,8 +17001,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       if( G.tn.opt[level].crop === true ) {
         sf=G.O.thumbnailCropScaleFactor;
       }
-    
-    
+
+
       var sizes=['xs','sm','me','la','xl'];
       for( var i=0; i<sizes.length; i++ ) {
         if( G.tn.settings.width[level][sizes[i]] == 'auto' || G.tn.settings.width[level][sizes[i]] == '' ) {
@@ -16982,7 +17013,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
           tn.width[level][sizes[i]]=one.width;
           tn.height[level][sizes[i]]=one.height;
         }
-        else 
+        else
           if( G.tn.settings.height[level][sizes[i]] == 'auto' || G.tn.settings.height[level][sizes[i]] == '' ) {
             let sdir='width_';
             let tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
@@ -17006,7 +17037,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       }
       return tn;
     }
-    
+
     function FlickrRetrieveOneImage(sdir, tsize, item ) {
       var one={ url: '', width: 0, height: 0 };
       var tnIndex=0;
@@ -17025,7 +17056,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       one.height = parseInt(item['height_'+fSize]);
       return one;
     }
-    
+
     var FilterByTags = function(data, tagBlockList) {
       if( tagBlockList!= '' && data != undefined) {
         data = data.filter(function (item) {
@@ -17039,11 +17070,11 @@ if (typeof define === 'function' && define.amdDISABLED) {
       }
       return data;
     };
-    
+
     /** @function GetHiddenAlbums */
     // var GetHiddenAlbums = function( hiddenAlbums, callback ){
       // not supported -> doesn't exit in Flickr
-      // callback();     
+      // callback();
     // }
 
     // -----------
@@ -17081,10 +17112,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
     }
 
   };
-  
+
 // END FLICKR DATA SOURCE FOR NANOGALLERY2
 // }( jQuery ));
 }));
-
-  
-  
