@@ -1,4 +1,4 @@
-/* nanogallery2 - v3.0.5 - 2024-03-13 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.5 - 2024-03-14 - https://nanogallery2.nanostudio.org */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -8120,7 +8120,7 @@
       var item=G.I[idx];
 
       var currentURL=document.location.protocol + '//' + document.location.hostname + document.location.pathname;
-      var newLocationHash = '#' + G.baseEltID + '/';
+      var newLocationHash = '#nanogallery/' + G.baseEltID + '/';
       if( item.kind == 'image' ) {
         newLocationHash += item.albumID + '/' + item.GetID();
       }
@@ -10579,7 +10579,7 @@
       // standard use case -> location hash processing
       if( !G.O.locationHash ) { return false; }
 
-      var curGal = '#/' + G.baseEltID + '/',
+      var curGal = '#nanogallery/' + G.baseEltID + '/',
       newLocationHash = location.hash;
       if( G.O.debugMode ) {
         console.log('------------------------ PROCESS LOCATION HASH');
@@ -10666,8 +10666,6 @@
         // G.locationHashLastUsed='#'+newLocationHash;
         try {
           top.location.hash=newLocationHash;
-
-
         }
         catch(e) {
           // location hash is not supported by current browser --> disable the option
