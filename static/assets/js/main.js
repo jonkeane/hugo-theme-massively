@@ -12,7 +12,7 @@
 		$header = $('#header'),
 		$nav = $('#nav'),
 		$main = $('#main'),
-		$nanogallery = $('#nanogallery2'),
+		$nanogallery = $('#ng2'),
 		$navPanelToggle, $navPanel, $navPanelInner;
 
 	// Breakpoints.
