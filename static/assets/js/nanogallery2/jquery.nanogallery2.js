@@ -10648,10 +10648,6 @@
         newLocationHash+='/'+imageID;
       }
 
-      if( imageStatic != '' ) {
-        newLocationHash+='?s='+imageStatic;
-      }
-
       var lH=location.hash;
       if( G.O.debugMode ) {
         console.log('newLocationHash2: '+newLocationHash);
@@ -10662,9 +10658,16 @@
       if( G.O.debugMode ) { console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed); }
       
       if(  lH == '' || lH != newLocationHash ) {
+        if( imageStatic != '' ) {
+          const url = new URL(top.location.href);
+          url.searchParams.set('s', imageStatic);
+          top.history.replaceState({}, '', url.toString());
+        }
         // G.locationHashLastUsed='#'+newLocationHash;
         try {
           top.location.hash=newLocationHash;
+
+
         }
         catch(e) {
           // location hash is not supported by current browser --> disable the option
