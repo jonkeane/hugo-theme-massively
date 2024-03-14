@@ -7,7 +7,6 @@
 <!-- Specifically to grab that (resized) gallery images -->
 {{ $image := resources.Get . }}
 {{ $x1200x := $image.Resize "1200x" }}
-<meta property="og:image" content="static_og" />
 <meta property="og:image" content="{{ $x1200x.RelPermalink | absURL }}" />
 {{- else -}}
 {{- with $.Params.images -}}
