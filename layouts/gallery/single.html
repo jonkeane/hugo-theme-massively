@@ -48,8 +48,8 @@
 										 "standard":   "label, linkOriginalButton, infoButton",
 										 "minimized":  "label, linkOriginalButton, infoButton, cart" },
 								 "viewerTools":    {
-											"topLeft":   "",
-											"topRight":  "info, linkOriginalButton, playPauseButton, fullscreenButton, closeButton" },
+											"topLeft":   "fullscreenButton", "zoomButton",
+											"topRight":  "info, linkOriginalButton, playPauseButton, closeButton" },
 									"kind":             "flickr",
 									"thumbnailLabel": {displayDescription: false, display: false},
 									"userID":           "{{ .Site.Params.nanog.flickr_userid }}",
@@ -112,14 +112,13 @@
 										return {content: content, title: title}; },
 									"thumbnailHeight":  300,
 									"thumbnailWidth":   "auto",
-									"viewerZoom":       false,
 									"album": "{{ .Params.flickr_album }}",
 									{{ if .Site.Params.nanog.tagBlockList }}
 									"tagBlockList": "{{ .Site.Params.nanog.tagBlockList }}",
 									{{ end }}
 									"thumbnailBorderVertical": 0,
 									"thumbnailBorderHorizontal": 0,
-									"thumbnailHoverEffect2": "{{ .Site.Params.nanog.thumbnailHoverEffect2 }}",
+									"thumbnailHoverEffect2": "imageScale105",
 									"thumbnailAlignment": "center",
 									"thumbnailGutterWidth": 2,
 									"thumbnailGutterHeight": 2

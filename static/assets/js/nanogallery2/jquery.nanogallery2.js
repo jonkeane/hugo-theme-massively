@@ -1,4 +1,4 @@
-/* nanogallery2 - v3.0.5 - 2024-03-14 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.5 - 2024-03-16 - https://nanogallery2.nanostudio.org */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -1469,7 +1469,7 @@
     imageTransition :             'swipe2',
     viewerTransitionMediaKind :   'img',
     viewerZoom :                  true,
-    viewerImageDisplay :          '',
+    viewerImageDisplay :          'bestImageQuality',
     openOnStart :                 '',
     viewerHideToolsDelay :        4000,
     viewerToolbar : {
@@ -8491,26 +8491,25 @@
     function ViewerZoomIn( zoomIn ) {
     if( zoomIn ) {
         // zoom in
-        G.VOM.zoom.userFactor += 0.1;
+        G.VOM.zoom.userFactor += 0.5;
         ViewerZoomMax();
       }
       else {
         // zoom out
-        G.VOM.zoom.userFactor -= 0.1;
+        G.VOM.zoom.userFactor -= 0.5;
         ViewerZoomMin();
       }
       ViewerMediaSetPosAndZoom();
     }
 
     function ViewerZoomMax() {
-      if( G.VOM.zoom.userFactor > 3 ) {
-        G.VOM.zoom.userFactor = 3;
+      if( G.VOM.zoom.userFactor > 5 ) {
+        G.VOM.zoom.userFactor = 5;
       }
     }
     function ViewerZoomMin() {
-
-      if( G.VOM.zoom.userFactor < 0.2 ) {
-        G.VOM.zoom.userFactor = 0.2;
+      if( G.VOM.zoom.userFactor < 1 ) {
+        G.VOM.zoom.userFactor = 1;
       }
     }
 
@@ -8614,12 +8613,49 @@
 
     }
 
+    // limit panning to be the edge of the image, so that someone can't find
+    // themsleves in all black
+    function PanLimiter(pos, kind, imageContainer, buffer = 0) {
+      switch (kind) {
+        case 'X':
+          var imageLimit = imageContainer.children().eq(1)[0].width;
+          var imageContainerLimit = imageContainer.width();
+          break;
+        case 'Y':
+          var imageLimit = imageContainer.children().eq(1)[0].height;
+          var imageContainerLimit = imageContainer.height();
+          break;
+      }
+
+      // 0 is the center, so this should be the image width, but
+      // subtract half of the contianer (which is the viewport)
+      var limit = (imageLimit / 2 - imageContainerLimit / 2) + buffer;
+
+      // if the limi is less than 0, the image doesn't fill the screen
+      // so set to 0
+      limit = limit < 0 ? 0 : limit;
+
+      // If the position is over the limit, reset to limig
+      pos = pos > limit ? limit : pos
+      pos = pos < -limit ? -limit : pos
+
+      return pos
+    }
+
     // position the image depending on the zoom factor and the pan X/Y position
     // IMG is the only media kind supporting zoom/pan
     function ViewerImagePanSetPosition(posX, posY, imageContainer, savePosition ) {
       if( savePosition ) {
+        posX = PanLimiter(posX, "X", imageContainer)
+        posY = PanLimiter(posY, "Y", imageContainer)
+
         G.VOM.panPosX = posX;
         G.VOM.panPosY = posY;
+      } else {
+        // add a buffer so that while panning, one can see the black
+        // but above it's not there so that it snaps to the limits.
+        posX = PanLimiter(posX, "X", imageContainer, 25)
+        posY = PanLimiter(posY, "Y", imageContainer, 25)
       }
 
       posX += G.VOM.zoom.posX;
@@ -8715,6 +8751,7 @@
       }
       var sTB = '<div class="toolbarContainer nGEvent' + vtbBg1 + '" style="visibility:' +(G.O.viewerToolbar.display ? "visible" : "hidden")+';'+vtbAlign+'"><div class="toolbar nGEvent' + vtbBg2 + '"></div></div>';
       G.VOM.$toolbar = jQuery(sTB).appendTo(G.VOM.$viewer);
+
 
       if( G.VOM.toolbarMode == 'min' || (G.O.viewerToolbar.autoMinimize > 0 && G.O.viewerToolbar.autoMinimize >= G.GOM.cache.viewport.w) ) {
         ViewerToolbarForVisibilityMin();
@@ -9118,7 +9155,7 @@
             }
           });
 
-          // pinch end
+          // pinches
           G.VOM.hammertime.on('pinchend', function(ev) {
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
@@ -9129,7 +9166,11 @@
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
 
             if( ViewerZoomStart() ) {
-              G.VOM.zoom.userFactor = ev.scale;
+              // desensitize the scaling, this brings the scale closer to
+              // 1 equally for both above and below 1
+              var new_scale = Math.pow(ev.scale, 0.05);
+              G.VOM.zoom.userFactor =  G.VOM.zoom.userFactor * new_scale;
+
               ViewerZoomMax();
               ViewerZoomMin();
               ViewerMediaSetPosAndZoom();   // center media
@@ -9209,6 +9250,9 @@
       }
       if( G.VOM.$toolbarTR != null ) {
         G.VOM.$toolbarTR.css('opacity', op);
+      }
+      if( G.VOM.gallery.$tmbCont != null ) {
+        G.VOM.gallery.$tmbCont.css('opacity', op);
       }
 
       // next/previous
@@ -10546,23 +10590,25 @@
       });
 
       // mouse wheel to zoom in/out the image displayed in the internal lightbox
-      jQuery(window).bind('mousewheel wheel', function(e){
+      // disable scroll wheel zoom since it can't limit itself to up/down and acts
+      // erratically. This doesn't change pinch zoom on touch devices.
+      // jQuery(window).bind('mousewheel wheel', function(e){
 
-        if( G.VOM.viewerDisplayed && G.VOM.content.current.NGY2Item().mediaKind == 'img' ) {
+      //   if( G.VOM.viewerDisplayed && G.VOM.content.current.NGY2Item().mediaKind == 'img' ) {
 
-          var deltaY = 0;
-          e.preventDefault();
+      //     var deltaY = 0;
+      //     e.preventDefault();
 
-          if( ViewerZoomStart() ) {
-            if (e.originalEvent.deltaY) { // FireFox 17+ (IE9+, Chrome 31+?)
-              deltaY = e.originalEvent.deltaY;
-            } else if (e.originalEvent.wheelDelta) {
-              deltaY = -e.originalEvent.wheelDelta;
-            }
-            ViewerZoomIn( deltaY <= 0 ? true : false );
-          }
-        }
-      });
+      //     if( ViewerZoomStart() ) {
+      //       if (e.originalEvent.deltaY) { // FireFox 17+ (IE9+, Chrome 31+?)
+      //         deltaY = e.originalEvent.deltaY;
+      //       } else if (e.originalEvent.wheelDelta) {
+      //         deltaY = -e.originalEvent.wheelDelta;
+      //       }
+      //       ViewerZoomIn( deltaY <= 0 ? true : false );
+      //     }
+      //   }
+      // });
 
       // mouse move -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
@@ -16672,8 +16718,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       thumbAvailableSizes :     new Array(75, 100, 150, 240, 500, 640),
       thumbAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z'),
       photoSize :               '0',
-      photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
-      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o')
+      photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 4096, 10000),
+      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', '4k', 'o')
     };
 
 
@@ -16689,17 +16735,17 @@ if (typeof define === 'function' && define.amdDISABLED) {
         // photos
         if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
           // get photos from full photostream
-          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
+          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k,url_4k&per_page=500&format=json";
         }
         else
           if( G.I[albumIdx].GetID() == 0 ) {
           // retrieve the list of albums
-          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k,url_4k&format=json";
           kind='album';
         }
           else {
             // photos from one specific photoset
-            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + G.O.flickrAPIKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + G.O.flickrAPIKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k,url_4k&format=json";
           }
 
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
