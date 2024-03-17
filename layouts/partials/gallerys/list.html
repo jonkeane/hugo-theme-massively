@@ -12,7 +12,19 @@
             <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
         </header>
         {{ if .Params.image }}
-        <a href="{{ .RelPermalink }}" class="image fit"><img src="{{ .Params.image | relURL }}" alt="" /></a>
+        {{ $image := resources.Get .Params.image }}
+        {{ $x1600x := $image.Resize "1800x" }}
+        {{ $x800x := $image.Resize "900x" }}
+        {{ $x400x := $image.Resize "400x" }}
+        <a href="{{ .RelPermalink }}" class="image main">
+            <picture>
+                <source
+                srcset="{{ $x1600x.RelPermalink }} 3x,
+                        {{ $x800x.RelPermalink }} 2x,
+                        {{ $x400x.RelPermalink }} 1x" />
+                <img src="{{ $x800x.RelPermalink }}" alt = "{{ $x800x.Exif.Tags.ImageDescription }}">
+            </picture>
+        </a>
         {{ end }}
         <p>{{ .Description }}</p>
         <ul class="actions">

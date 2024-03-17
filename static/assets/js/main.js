@@ -12,6 +12,7 @@
 		$header = $('#header'),
 		$nav = $('#nav'),
 		$main = $('#main'),
+		$nanogallery = $('#nanogallery2'),
 		$navPanelToggle, $navPanel, $navPanelInner;
 
 	// Breakpoints.
@@ -25,103 +26,19 @@
 			xxsmall:   [null,       '360px'    ]
 		});
 
-	/**
-	 * Applies parallax scrolling to an element's background image.
-	 * @return {jQuery} jQuery object.
-	 */
-	$.fn._parallax = function(intensity) {
-
-		var	$window = $(window),
-			$this = $(this);
-
-		if (this.length == 0 || intensity === 0)
-			return $this;
-
-		if (this.length > 1) {
-
-			for (var i=0; i < this.length; i++)
-				$(this[i])._parallax(intensity);
-
-			return $this;
-
-		}
-
-		if (!intensity)
-			intensity = 0.25;
-
-		$this.each(function() {
-
-			var $t = $(this),
-				$bg = $('<div class="bg"></div>').appendTo($t),
-				on, off;
-
-			on = function() {
-
-				$bg
-					.removeClass('fixed')
-					.css('transform', 'matrix(1,0,0,1,0,0)');
-
-				$window
-					.on('scroll._parallax', function() {
-
-						var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
-
-						$bg.css('transform', 'matrix(1,0,0,1,0,' + (pos * intensity) + ')');
-
-					});
-
-			};
-
-			off = function() {
-
-				$bg
-					.addClass('fixed')
-					.css('transform', 'none');
-
-				$window
-					.off('scroll._parallax');
-
-			};
-
-			// Disable parallax on ..
-				if (browser.name == 'ie'			// IE
-				||	browser.name == 'edge'			// Edge
-				||	window.devicePixelRatio > 1		// Retina/HiDPI (= poor performance)
-				||	browser.mobile)					// Mobile devices
-					off();
-
-			// Enable everywhere else.
-				else {
-
-					breakpoints.on('>large', on);
-					breakpoints.on('<=large', off);
-
-				}
-
-		});
-
-		$window
-			.off('load._parallax resize._parallax')
-			.on('load._parallax resize._parallax', function() {
-				$window.trigger('scroll');
-			});
-
-		return $(this);
-
-	};
 
 	// Play initial animations on page load.
 		$window.on('load', function() {
 			window.setTimeout(function() {
 				$body.removeClass('is-preload');
+				// start loading the second image in the slider
+                pic_children = $("#theCarousel-image-1").children();
+                pic_children.each(set_srcset);
 			}, 100);
 		});
 
 	// Scrolly.
 		$('.scrolly').scrolly();
-
-	// Background.
-		$wrapper._parallax(0.925);
 
 	// Nav Panel.
 
@@ -133,7 +50,7 @@
 
 			// Change toggle styling once we've scrolled past the header.
 				$header.scrollex({
-					bottom: '5vh',
+					bottom: '500px',
 					enter: function() {
 						$navPanelToggle.removeClass('alt');
 					},
@@ -254,5 +171,60 @@
 			});
 
 		}
+	// Gallery back button
+		var $galleryBackToggle = $('#galleryBackBtn');
+		if ($galleryBackToggle.length > 0) {
+			$main.unscrollex();
+
+			// Change toggle styling once we've scrolled past the header.
+			$nanogallery.scrollex({
+				mode: 'top',
+				enter: function() {
+					$galleryBackToggle.addClass('alt');
+				},
+				leave: function() {
+					$galleryBackToggle.removeClass('alt');
+				}
+			});
+		}
 
 })(jQuery);
+
+
+// Bootsrape carousel/slider functions
+// function to set the src and srcset
+set_srcset = function() {
+    child = $(this);
+    child.attr("srcset", child.data('srcset'));
+    child.removeAttr("data-srcset");
+
+    child.attr("src", child.data('src'));
+    child.removeAttr("data-src");
+}
+
+// from https://coderwall.com/p/6qaeya/lazy-carousel-in-bootstrap
+// load the next image when the carousel is sliding
+$(function() {
+  return $(".carousel.lazy").on("slid.bs.carousel", function(ev) {
+    // this should already be done, but just in case!
+    var pic_node;
+    pic_node = $(ev.relatedTarget).find("picture");
+    pic_children = pic_node.children();
+    pic_children.each(set_srcset);
+
+    // the next image too
+    var next_pic_node;
+    next_pic_node = $(ev.relatedTarget).next().find("picture");
+    next_pic_children = next_pic_node.children();
+    next_pic_children.each(set_srcset);
+  });
+});
+
+
+// swipe for carousel
+// TODO: prevent vertical swiping?
+$(document).ready(function() {
+    $('.carousel').bcSwipe({ threshold: 50 });
+});
+
+// TODO: https://coderwall.com/p/uf2pka/normalize-twitter-bootstrap-carousel-slide-heights normalize at least what has been seen so far.

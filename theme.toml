@@ -1,18 +1,18 @@
-name = "Massively"
+name = "Massively-JTK"
 license = "Creative Commons"
-licenselink = "https://github.com/curttimson/hugo-theme-massively/blob/master/LICENSE"
+licenselink = "https://github.com/jonkeane/hugo-theme-massively-jtk/blob/develop/LICENSE"
 description = "An elegant open-source and mobile-first theme"
 homepage = "https://html5up.net/uploads/demos/massively/index.html"
 tags = ["blog", "html5up"]
-features = ["blog"]
+features = ["single page", "blog", "simple", "responsive"]
 min_version = "0.54.0"
 
 [author]
-    name = "Curtis Timson"
-    homepage = "https://curtistimson.co.uk/"
+    name = "Jonathan Keane"
+    homepage = "https://jonkeane.com/"
 
 # If porting an existing theme
 [original]
-    author = "HTML5UP"
-    homepage = "https://html5up.net"
-    repo = "https://html5up.net/massively"
+    author = "Curtis Timson"
+    homepage = "https://curtistimson.co.uk/"
+    repo = "https://github.com/curtistimson/hugo-theme-massively"
