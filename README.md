@@ -1,14 +1,17 @@
-# Hugo Theme Massively
+# Hugo Theme Massively JTK
+
+Massively theme ported from [HTML5 UP](https://html5up.net/) for use with the [Hugo static site generator](https://gohugo.io/).
+A JTK-specific theme, a derivative of [Curtis Timson's Massively theme](https://github.com/curtistimson/hugo-theme-massively) ported from [HTML5 UP](https://html5up.net/) for use with the [Hugo static site generator](https://gohugo.io/).
+
 
 ![](https://img.shields.io/badge/Hugo-%5E0.54.0-ff4088?style=flat-square&logo=hugo) [![e2e tests](https://github.com/curtiscde/hugo-theme-massively/actions/workflows/e2e.yml/badge.svg)](https://github.com/curtiscde/hugo-theme-massively/actions/workflows/e2e.yml)
 
-Massively theme ported from [HTML5 UP](https://html5up.net/) for use with the [Hugo static site generator](https://gohugo.io/).
 
 ![](images/device-screenshots.png)
 
 ## Demo
 
-https://hugo-theme-massively.netlify.com/
+TBD, the original Massively theme can be seen at: https://hugo-theme-massively.netlify.com/
 
 ## Setup
 
@@ -72,8 +75,9 @@ $ hugo server --themesDir ../..
 ## Original Theme Credits
 
  - [Massively by HTML5 UP](https://html5up.net/massively)
-
- ## License
+ - [Curtis Timson's Massively theme](https://github.com/curtistimson/hugo-theme-massively)
+ 
+## License
 
 This hugo theme is licensed under the [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/). 
 
